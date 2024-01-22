@@ -1,7 +1,7 @@
 control 'SV-238214' do
-  title "The Ubuntu operating system must display the Standard Mandatory DoD Notice and Consent
-Banner before granting any local or remote connection to the system. "
-  desc "Display of a standardized and approved use notification before granting access to the
+  title 'The Ubuntu operating system must display the Standard Mandatory DoD Notice and Consent
+Banner before granting any local or remote connection to the system. '
+  desc %q(Display of a standardized and approved use notification before granting access to the
 publicly accessible operating system ensures privacy and security notification verbiage
 used is consistent with applicable federal laws, Executive Orders, directives, policies,
 regulations, standards, and guidance.
@@ -14,7 +14,7 @@ The banner must be formatted in accordance with applicable DoD policy. Use the
 following verbiage for operating systems that can accommodate banners of 1300 characters:
 
 
-\"You are accessing a U.S. Government (USG) Information System (IS) that is provided for
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for
 USG-authorized use only.
 
 By using this IS (which includes any device attached to this IS),
@@ -40,17 +40,15 @@ benefit or privacy.
 to PM, LE or CI investigative searching or monitoring of the content of privileged
 communications, or work product, related to personal representation or services by
 attorneys, psychotherapists, or clergy, and their assistants. Such communications and
-work product are private and confidential. See User Agreement for details.\"
+work product are private and confidential. See User Agreement for details."
 
 Use the
 following verbiage for operating systems that have severe limitations on the number of
 characters that can be displayed in the banner:
 
-\"I've read & consent to terms in IS user
-agreem't.\"
-
- "
-  desc 'check', "Verify the Ubuntu operating system displays the Standard Mandatory DoD Notice and Consent
+"I've read & consent to terms in IS user
+agreem't.")
+  desc 'check', 'Verify the Ubuntu operating system displays the Standard Mandatory DoD Notice and Consent
 Banner before granting access to the Ubuntu operating system via an SSH logon with the
 following command:
 
@@ -71,7 +69,7 @@ specified banner file matches the Standard Mandatory DoD Notice and Consent Bann
 
 $ cat /etc/issue.net
 
-\"You are accessing a U.S. Government (USG) Information System (IS)
+"You are accessing a U.S. Government (USG) Information System (IS)
 that is provided for USG-authorized use only.
 
 By using this IS (which includes any device
@@ -98,11 +96,11 @@ this IS does not constitute consent to PM, LE or CI investigative searching or m
 the content of privileged communications, or work product, related to personal
 representation or services by attorneys, psychotherapists, or clergy, and their
 assistants. Such communications and work product are private and confidential. See User
-Agreement for details.\"
+Agreement for details."
 
 If the banner text does not match the Standard Mandatory DoD Notice
-and Consent Banner exactly, this is a finding. "
-  desc 'fix', "Set the parameter Banner in \"/etc/ssh/sshd_config\" to point to the \"/etc/issue.net\" file:
+and Consent Banner exactly, this is a finding.'
+  desc 'fix', %q(Set the parameter Banner in "/etc/ssh/sshd_config" to point to the "/etc/issue.net" file:
 
 
 $ sudo sed -i '/^Banner/d' /etc/ssh/sshd_config
@@ -113,7 +111,7 @@ Either create the file containing the banner or replace the text in
 the file with the Standard Mandatory DoD Notice and Consent Banner. The DoD required text is:
 
 
-\"You are accessing a U.S. Government (USG) Information System (IS) that is provided for
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for
 USG-authorized use only.
 
 By using this IS (which includes any device attached to this IS),
@@ -139,26 +137,28 @@ benefit or privacy.
 to PM, LE or CI investigative searching or monitoring of the content of privileged
 communications, or work product, related to personal representation or services by
 attorneys, psychotherapists, or clergy, and their assistants. Such communications and
-work product are private and confidential. See User Agreement for details.\"
+work product are private and confidential. See User Agreement for details."
 
 Restart the
 SSH daemon for the changes to take effect and then signal the SSH server to reload the
 configuration file:
 
-$ sudo systemctl -s SIGHUP kill sshd "
+$ sudo systemctl -s SIGHUP kill sshd)
   impact 0.5
+  ref 'DPMS Target Canonical Ubuntu 20.04 LTS'
   tag severity: 'medium '
   tag gtitle: 'SRG-OS-000228-GPOS-00088 '
-  tag satisfies: %w(SRG-OS-000228-GPOS-00088 SRG-OS-000023-GPOS-00006)
+  tag satisfies: ['SRG-OS-000228-GPOS-00088', 'SRG-OS-000023-GPOS-00006']
   tag gid: 'V-238214 '
   tag rid: 'SV-238214r858525_rule '
   tag stig_id: 'UBTU-20-010038 '
   tag fix_id: 'F-41383r653816_fix '
-  tag cci: %w(CCI-000048 CCI-001384 CCI-001385 CCI-001386 CCI-001387 CCI-001388)
+  tag cci: ['CCI-000048', 'CCI-001384', 'CCI-001385', 'CCI-001386', 'CCI-001387', 'CCI-001388']
   tag nist: ['AC-8 a', 'AC-8 c 1', 'AC-8 c 2', 'AC-8 c 3']
-  tag 'host', 'container'
+  tag 'host'
+  tag 'container'
 
-  if !service('sshd').enabled? || !package('sshd-server').installed? || virtualization.system.eql?('docker')
+  if !service('sshd').enabled? or !package('sshd-server').installed? or virtualization.system.eql?('docker')
     impact 0.0
     describe 'This control is Not Applicable' do
       if virtualization.system.eql?('docker')

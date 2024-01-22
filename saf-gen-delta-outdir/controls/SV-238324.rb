@@ -1,6 +1,6 @@
 control 'SV-238324' do
   title 'The Ubuntu operating system must monitor remote access methods. '
-  desc "Remote access services, such as those providing remote access to network devices and
+  desc 'Remote access services, such as those providing remote access to network devices and
 information systems, which lack automated monitoring capabilities, increase risk and make
 remote user access management difficult at best.
 
@@ -13,34 +13,35 @@ Automated monitoring of remote access
 sessions allows organizations to detect cyber attacks and also ensure ongoing compliance
 with remote access policies by auditing connection activities of remote access
 capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system
-components (e.g., servers, workstations, notebook computers, smartphones, and tablets). "
-  desc 'check', "Verify that the Ubuntu operating system monitors all remote access methods.
+components (e.g., servers, workstations, notebook computers, smartphones, and tablets).'
+  desc 'check', %q(Verify that the Ubuntu operating system monitors all remote access methods.
 
 Check that
 remote access methods are being logged by running the following command:
 
 $  grep -E -r
-'^(auth,authpriv\\.\\*|daemon\\.\\*)' /etc/rsyslog.*
+'^(auth,authpriv\.\*|daemon\.\*)' /etc/rsyslog.*
 
 /etc/rsyslog.d/50-default.conf:auth,authpriv.*                        /var/log/auth.log
 
 /etc/rsyslog.d/50-default.conf:daemon.*                        /var/log/messages
 
-If \"auth.*\",
-\"authpriv.*\", or \"daemon.*\" are not configured to be logged in at least one of the config
-files, this is a finding. "
-  desc 'fix', "Configure the Ubuntu operating system to monitor all remote access methods by adding the
-following lines to the \"/etc/rsyslog.d/50-default.conf\" file:
+If "auth.*",
+"authpriv.*", or "daemon.*" are not configured to be logged in at least one of the config
+files, this is a finding.)
+  desc 'fix', 'Configure the Ubuntu operating system to monitor all remote access methods by adding the
+following lines to the "/etc/rsyslog.d/50-default.conf" file:
 
 auth.*,authpriv.*
 /var/log/secure
 daemon.* /var/log/messages
 
 For the changes to take effect, restart the
-\"rsyslog\" service with the following command:
+"rsyslog" service with the following command:
 
-$ sudo systemctl restart rsyslog.service "
+$ sudo systemctl restart rsyslog.service'
   impact 0.5
+  ref 'DPMS Target Canonical Ubuntu 20.04 LTS'
   tag severity: 'medium '
   tag gtitle: 'SRG-OS-000032-GPOS-00013 '
   tag gid: 'V-238324 '
@@ -49,10 +50,11 @@ $ sudo systemctl restart rsyslog.service "
   tag fix_id: 'F-41493r832958_fix '
   tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
-  tag 'host', 'container'
+  tag 'host'
+  tag 'container'
 
   options = {
-    assignment_regex: /^\s*([^:]*?)\s*\t\s*(.*?)\s*$/
+    assignment_regex: /^\s*([^:]*?)\s*\t\s*(.*?)\s*$/,
   }
   config_file = input('rsyslog_config_file')
   auth_setting = parse_config_file(config_file, options).params['auth,authpriv.*']
